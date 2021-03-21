@@ -1,2 +1,0 @@
-include ':app'
-rootProject.name = "iMonitor_android"
