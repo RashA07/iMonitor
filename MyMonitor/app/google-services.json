@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1063412959912",
+    "firebase_url": "https://imonitor-eff27-default-rtdb.firebaseio.com",
+    "project_id": "imonitor-eff27",
+    "storage_bucket": "imonitor-eff27.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1063412959912:android:8ed17b13c1bfbe5276109d",
+        "android_client_info": {
+          "package_name": "com.example.mymonitor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1063412959912-caa9kpq8q03au8r6bec0704qeor89siu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA795PvhpVzmvW5QPglJpDf3ws4s_JVneo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1063412959912-caa9kpq8q03au8r6bec0704qeor89siu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
