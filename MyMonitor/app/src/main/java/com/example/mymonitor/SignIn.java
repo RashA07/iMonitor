@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.mymonitor.provider.FirebaseViewModel;
 
@@ -32,7 +33,9 @@ public class SignIn extends AppCompatActivity {
         String name_string = name.getText().toString();
         String phoneNo_string = phoneNo.getText().toString();
 
+        Toast.makeText(this, "Welcome", Toast.LENGTH_SHORT).show();
         mViewModel.loginUser(name_string, phoneNo_string,this);
+
 //
 //        if (mViewModel.loginUser(name_string, phoneNo_string)){
 //
