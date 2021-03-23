@@ -3,4 +3,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="reading_name">Reading Name</string>
+    <string name="value">Value</string>
+    <string name="average">Average</string>
 </resources>

@@ -28,8 +28,8 @@ import java.util.Objects;
 
 public class FirebaseViewModel extends AndroidViewModel {
 
-    DatabaseReference mRef ;
-    DatabaseReference mPatients ;
+    DatabaseReference mRef;
+    DatabaseReference mPatients;
     DatabaseReference mClinics;
 
     public FirebaseViewModel(@NonNull Application application) {
@@ -37,23 +37,6 @@ public class FirebaseViewModel extends AndroidViewModel {
         mRef= FirebaseDatabase.getInstance().getReference();
         mPatients = mRef.child("Patients");
         mClinics = mRef.child("Clinics");
-
-//        mUser.addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
-//
-//            @Override
-//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
-//
-//            @Override
-//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {}
-//
-//            @Override
-//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {}
-//        });
     }
 
     public DatabaseReference getReadings(String device){
@@ -67,6 +50,7 @@ public class FirebaseViewModel extends AndroidViewModel {
     public void insertClinic(Clinic clinic) {
         mClinics.push().setValue(clinic);
     }
+
 
     public void loginUser(final String name, final String phoneNo, final Context c) {
         Query query = mPatients.orderByChild("details/name").equalTo(name);
@@ -103,6 +87,7 @@ public class FirebaseViewModel extends AndroidViewModel {
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
+
 
                         }
                     });
