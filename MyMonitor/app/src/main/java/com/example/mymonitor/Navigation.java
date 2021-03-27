@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.mymonitor.provider.Patient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -27,14 +28,20 @@ public class Navigation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.navigation_bar);
 
+
+
         if (User.getUsertype() == UserEnum.CLINIC){
             Patient p = new Gson().fromJson(getIntent().getStringExtra("PATIENT_DATA"), Patient.class);
+
+            System.out.println("DETAILS");
+            System.out.println(p.getDetails().getName());
 
             Objects.requireNonNull(getSupportActionBar()).setTitle(p.getDetails().getName());
             userId = getIntent().getStringExtra("PATIENT_KEY");
             userDevice = p.getDevice().getName();
-        } else {
+        } else if (User.getUsertype() == UserEnum.PATIENT) {
             Objects.requireNonNull(getSupportActionBar()).setTitle(User.getName());
+
             userId = User.getKey();
             userDevice = User.getDevice();
         }

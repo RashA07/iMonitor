@@ -1,5 +1,6 @@
 package com.example.mymonitor;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -25,12 +26,15 @@ public class Patients extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
     PatientsRecyclerViewAdapter adapter;
     FirebaseViewModel mViewModel;
+    Context context;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patients);
+
+        context = this;
 
 
         Objects.requireNonNull(getSupportActionBar()).setTitle(User.getName());
@@ -49,8 +53,9 @@ public class Patients extends AppCompatActivity {
                 new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        Intent intent = new Intent(getApplicationContext(), Navigation.class);
-                        intent.putExtra("PATIENT_NAME", new Gson().toJson(adapter.getPatientByIndex(position)));
+                        Intent intent = new Intent(context, Navigation.class);
+                        System.out.println(context);
+                        intent.putExtra("PATIENT_DATA", new Gson().toJson(adapter.getPatientByIndex(position)));
                         intent.putExtra("PATIENT_KEY", adapter.getPatientKeyByIndex(position));
                         startActivity(intent);
                     }

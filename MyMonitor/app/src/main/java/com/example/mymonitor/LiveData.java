@@ -90,6 +90,9 @@ public class LiveData extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Bundle bundle = this.getArguments();
+        System.out.println("PEEPEEPOOPO");
+        System.out.println(bundle);
+        System.out.println(savedInstanceState);
         if (bundle != null) {
             System.out.println("YES");
             userDevice = bundle.getString("userDevice");
@@ -101,6 +104,13 @@ public class LiveData extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            System.out.println("YES");
+            userDevice = bundle.getString("userDevice");
+        }
+
 
         temp_reading = view.findViewById(R.id.card_temp_current_reading);
         temp_avg = view.findViewById(R.id.card_temp_average_reading);
@@ -120,7 +130,7 @@ public class LiveData extends Fragment {
 
         mLiveDataViewModel = new ViewModelProvider(this).get(FirebaseViewModel.class);
 
-        mLiveData = mLiveDataViewModel.getReadings(User.getDevice());
+        mLiveData = mLiveDataViewModel.getReadings(userDevice);
         mLiveData.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
