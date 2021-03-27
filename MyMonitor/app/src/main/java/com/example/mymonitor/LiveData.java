@@ -26,6 +26,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -34,6 +36,7 @@ import java.util.Random;
 
 public class LiveData extends Fragment {
 
+    private static HashMap<String, Reading> readingHashMap = new HashMap<>();
     FirebaseViewModel mLiveDataViewModel;
     DatabaseReference mLiveData;
     TextView temp_reading;
@@ -45,17 +48,39 @@ public class LiveData extends Fragment {
     String userDevice;
 
     Object[] keys;
-    Random rand = new Random();
+
+    float cumulativeHeartRate = 0;
+    float cumulativeSPO2 = 0;
+    float cumulativeTemp = 0;
+
+    Reading patientReading = new Reading();
+
+//    HashMap<String, Reading> readingHashMap = new HashMap<>();
+
+    public static HashMap<String, Reading> getReadingHashMap() {
+        return readingHashMap;
+    }
 
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference ref = database.getReference("ARDUINO1/");
 
+
+    Bundle bundle = this.getArguments();
+
+//    String test = bundle.getString("userDevice");
+
+    DatabaseReference ref = database.getReference("ARDUINO1/");
+//    DatabaseReference ref = database.getReference(test+"/");
+
+    private static DecimalFormat df = new DecimalFormat("0.00");
 
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+//        System.out.println(test);
+        DataFromFirebase();
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_live_data, container, false);
@@ -68,6 +93,8 @@ public class LiveData extends Fragment {
         if (bundle != null) {
             System.out.println("YES");
             userDevice = bundle.getString("userDevice");
+//            DatabaseReference ref = database.getReference(userDevice+"/");
+//            System.out.println(userDevice);
         }
 
     }
@@ -92,20 +119,22 @@ public class LiveData extends Fragment {
         });
 
         mLiveDataViewModel = new ViewModelProvider(this).get(FirebaseViewModel.class);
-        // LiveData observation
-//        mLiveDataViewModel.getAllItems().observe(this, newData -> {
-//            adapter.setData(newData);
-//            adapter.notifyDataSetChanged();
-//            //tv.setText(newData.size() + "");
-//        });
+
         mLiveData = mLiveDataViewModel.getReadings(User.getDevice());
         mLiveData.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Reading data = dataSnapshot.getValue(Reading.class);
-                temp_reading.setText(data.getTemperature());
-                heart_reading.setText(data.getHeartRate());
-                sp_reading.setText(data.getSP02());
+//                Reading data = dataSnapshot.getValue(Reading.class);
+
+//                keys = readingHashMap.keySet().toArray();
+//
+//                Object last = keys[keys.length - 1];
+//
+//                Reading test = readingHashMap.get(last);
+//
+//                temp_reading.setText(test.getTemperature());
+//                heart_reading.setText(test.getHeartRate());
+//                sp_reading.setText(test.getSP02());
             }
 
             @Override
@@ -134,35 +163,57 @@ public class LiveData extends Fragment {
 
     private void DataFromFirebase() {
 
-        final Reading patientReading = new Reading();
-        final HashMap<String, Reading> readingHashMap = new HashMap<>();
-
-
         ref.child("data").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Iterator<DataSnapshot> items = snapshot.getChildren().iterator();
-                while (items.hasNext()){
-                    DataSnapshot item = items.next();
+                for (DataSnapshot item : snapshot.getChildren()) {
                     patientReading.setHeartRate(item.child("Heart Rate(BPM)").getValue().toString());
                     patientReading.setSP02(item.child("SP02(%)").getValue().toString());
                     patientReading.setTemperature(item.child("Temperature (°C)").getValue().toString());
                     readingHashMap.put((item.child("Time").getValue().toString()), patientReading);
 
                 }
-
                 keys = readingHashMap.keySet().toArray();
 
-                Object last = keys[keys.length-1];
+                Object last = keys[keys.length - 1];
 
                 Reading test = readingHashMap.get(last);
 
-                temp_reading.setText(test.getTemperature());
-                heart_reading.setText(test.getHeartRate());
-//                heart_avg
-                sp_reading.setText(test.getSP02());
+                float trial = Float.parseFloat(test.getHeartRate());
 
+//                if (trial == 0){
+//                    temp_reading.setText("Device Offline");
+//                    heart_reading.setText("Device Offline");
+//                    sp_reading.setText("Device Offline");
+//                }
+//                else {
+                    temp_reading.setText(test.getTemperature());
+                    heart_reading.setText(test.getHeartRate());
+                    sp_reading.setText(test.getSP02());
+//                }
+
+//                FIX THIS, FOR AVERAGE DATA
+                for (int i = 0; i < readingHashMap.size(); i++) {
+
+                    Reading readings = readingHashMap.get(keys[i]);
+                    System.out.println(readings.getHeartRate());
+
+                    cumulativeHeartRate += Float.parseFloat(readings.getHeartRate());
+                    cumulativeSPO2 += Float.parseFloat(readings.getSP02());
+                    cumulativeTemp += Float.parseFloat(readings.getTemperature());
                 }
+
+
+                float averageHeartRate = cumulativeHeartRate/keys.length;
+                float averageSpo2 = cumulativeSPO2/keys.length;
+                float averageTemp = cumulativeTemp/keys.length;
+
+                heart_avg.setText(Float.toString(Float.parseFloat(df.format(averageHeartRate))));
+                sp_avg.setText(Float.toString(Float.parseFloat(df.format(averageSpo2))));
+                temp_avg.setText(Float.toString(Float.parseFloat(df.format(averageTemp))));
+
+
+            }
 
 
             @Override
@@ -171,24 +222,8 @@ public class LiveData extends Fragment {
             }
         });
 
-
-
-
-
-
-
-
-
-
-
     }
 
-//    public void randomDataGenerator(){
-//
-//
-//        int n = rand.nextInt(10);
-//        mLiveData.push().setValue(new Reading(Integer.toString(90+n), Integer.toString(90+n), Integer.toString(35+n)));
-//    }
 }
 
 
