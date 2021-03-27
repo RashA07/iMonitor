@@ -37,6 +37,7 @@ import java.util.Random;
 public class LiveData extends Fragment {
 
     private static HashMap<String, Reading> readingHashMap = new HashMap<>();
+//    private static HashMap<String, Reading> readingHashMapFinal = new HashMap<>();
     FirebaseViewModel mLiveDataViewModel;
     DatabaseReference mLiveData;
     TextView temp_reading;
@@ -52,10 +53,6 @@ public class LiveData extends Fragment {
     float cumulativeHeartRate = 0;
     float cumulativeSPO2 = 0;
     float cumulativeTemp = 0;
-
-    Reading patientReading = new Reading();
-
-//    HashMap<String, Reading> readingHashMap = new HashMap<>();
 
     public static HashMap<String, Reading> getReadingHashMap() {
         return readingHashMap;
@@ -79,7 +76,6 @@ public class LiveData extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-//        System.out.println(test);
         DataFromFirebase();
 
         // Inflate the layout for this fragment
@@ -90,9 +86,7 @@ public class LiveData extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Bundle bundle = this.getArguments();
-        System.out.println("PEEPEEPOOPO");
-        System.out.println(bundle);
-        System.out.println(savedInstanceState);
+
         if (bundle != null) {
             System.out.println("YES");
             userDevice = bundle.getString("userDevice");
@@ -123,50 +117,56 @@ public class LiveData extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+//                Check if arduino is alive
+//                    If alive, get live data feed
+//                    else: say device is offline
+
 //                randomDataGenerator();
-                DataFromFirebase();
+//                DataFromFirebase();
             }
         });
 
         mLiveDataViewModel = new ViewModelProvider(this).get(FirebaseViewModel.class);
 
         mLiveData = mLiveDataViewModel.getReadings(userDevice);
-        mLiveData.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                Reading data = dataSnapshot.getValue(Reading.class);
 
-//                keys = readingHashMap.keySet().toArray();
+//        mLiveData.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+////                Reading data = dataSnapshot.getValue(Reading.class);
 //
-//                Object last = keys[keys.length - 1];
+////                keys = readingHashMap.keySet().toArray();
+////
+////                Object last = keys[keys.length - 1];
+////
+////                Reading test = readingHashMap.get(last);
+////
+////                temp_reading.setText(test.getTemperature());
+////                heart_reading.setText(test.getHeartRate());
+////                sp_reading.setText(test.getSP02());
+//            }
 //
-//                Reading test = readingHashMap.get(last);
+//            @Override
+//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 //
-//                temp_reading.setText(test.getTemperature());
-//                heart_reading.setText(test.getHeartRate());
-//                sp_reading.setText(test.getSP02());
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-
-        });
+//            }
+//
+//            @Override
+//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//            }
+//
+//            @Override
+//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//
+//        });
 
 
     }
@@ -176,15 +176,25 @@ public class LiveData extends Fragment {
         ref.child("data").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String heartRate;
+                String Spo2;
+                String Temp;
                 for (DataSnapshot item : snapshot.getChildren()) {
-                    patientReading.setHeartRate(item.child("Heart Rate(BPM)").getValue().toString());
-                    patientReading.setSP02(item.child("SP02(%)").getValue().toString());
-                    patientReading.setTemperature(item.child("Temperature (°C)").getValue().toString());
+
+                    heartRate = item.child("Heart Rate(BPM)").getValue().toString();
+                    Spo2 = item.child("SP02(%)").getValue().toString();
+                    Temp = item.child("Temperature (°C)").getValue().toString();
+
+                    Reading patientReading = new Reading(heartRate, Spo2, Temp);
+
                     readingHashMap.put((item.child("Time").getValue().toString()), patientReading);
 
                 }
+
                 keys = readingHashMap.keySet().toArray();
 
+
+//                DEBUG AND GET THE LATEST TIME BECAUSE NOW IT WORKS LIKE A HASHMAP AND THATS NOT GOOD
                 Object last = keys[keys.length - 1];
 
                 Reading test = readingHashMap.get(last);
@@ -202,11 +212,10 @@ public class LiveData extends Fragment {
                     sp_reading.setText(test.getSP02());
 //                }
 
-//                FIX THIS, FOR AVERAGE DATA
                 for (int i = 0; i < readingHashMap.size(); i++) {
 
                     Reading readings = readingHashMap.get(keys[i]);
-                    System.out.println(readings.getHeartRate());
+//                    System.out.println(readings.getHeartRate());
 
                     cumulativeHeartRate += Float.parseFloat(readings.getHeartRate());
                     cumulativeSPO2 += Float.parseFloat(readings.getSP02());
