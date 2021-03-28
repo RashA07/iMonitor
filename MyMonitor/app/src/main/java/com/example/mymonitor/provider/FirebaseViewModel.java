@@ -41,7 +41,7 @@ public class FirebaseViewModel extends AndroidViewModel {
     }
 
     public DatabaseReference getReadings(String device){
-        return mRef.child(device);
+        return mRef.child(device).child("data");
     }
 
     public void insertPatient(Patient patient) {

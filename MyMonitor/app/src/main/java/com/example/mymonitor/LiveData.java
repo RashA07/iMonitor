@@ -131,42 +131,37 @@ public class LiveData extends Fragment {
 
         mLiveData = mLiveDataViewModel.getReadings(userDevice);
 
-//        mLiveData.addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-////                Reading data = dataSnapshot.getValue(Reading.class);
-//
-////                keys = readingHashMap.keySet().toArray();
-////
-////                Object last = keys[keys.length - 1];
-////
-////                Reading test = readingHashMap.get(last);
-////
-////                temp_reading.setText(test.getTemperature());
-////                heart_reading.setText(test.getHeartRate());
-////                sp_reading.setText(test.getSP02());
-//            }
-//
-//            @Override
-//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-//            }
-//
-//            @Override
-//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//
-//        });
+        mLiveData.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Reading data = dataSnapshot.getValue(Reading.class);
+
+                temp_reading.setText(data.getTemperature());
+                heart_reading.setText(data.getHeartRate());
+                sp_reading.setText(data.getSP02());
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+
+        });
 
 
     }
