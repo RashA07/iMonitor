@@ -8,16 +8,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mymonitor.Clinics;
 import com.example.mymonitor.R;
 import com.example.mymonitor.provider.Clinic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
-public class ClinicsRecyclerViewAdapter extends RecyclerView.Adapter<ClinicsRecyclerViewAdapter.ViewHolder> {
+public class AllClinicsRecyclerViewAdapter extends RecyclerView.Adapter<AllClinicsRecyclerViewAdapter.ViewHolder> {
 
     private HashMap<String, Clinic> data = new HashMap<>();
 
@@ -44,7 +42,7 @@ public class ClinicsRecyclerViewAdapter extends RecyclerView.Adapter<ClinicsRecy
 
     @NonNull
     @Override
-    public ClinicsRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AllClinicsRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.clinics_card,parent,false);
 //        v.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -57,7 +55,7 @@ public class ClinicsRecyclerViewAdapter extends RecyclerView.Adapter<ClinicsRecy
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ClinicsRecyclerViewAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AllClinicsRecyclerViewAdapter.ViewHolder holder, int position) {
 
         System.out.println(data);
 

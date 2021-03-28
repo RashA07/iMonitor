@@ -3,18 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Clinics">
+    tools:context=".AllClinics">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/clinics_recyclerview"
+        android:id="@+id/all_clinics_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_clinics"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="16dp" />
 
 </FrameLayout>

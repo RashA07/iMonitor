@@ -25,13 +25,6 @@ public class Patient {
         clinics = new ArrayList<>();
         //default emergency call
         clinics.add("-MWCkgsPm0RMYc0gzYm4");
-//        clinics.add("-MWCvfitjP8ErvrvGgAJ");
-//        clinics.add("-MWCvimQt0Ah70Ln7gZb");
-//        clinics.add("-MWCvlqoB9TkfBCERzR3");
-//        clinics.add("-MWCvoaI-6kj14N9nPhp");
-//        clinics.add("-MWCvrH9vunBu806IJvS");
-//        clinics.add("-MWCvySnvjggGQJKIRT8");
-//        clinics.add("-MWCw3CZ6mgMQMBuFZmU");
 
 
     }
@@ -59,6 +52,8 @@ public class Patient {
     public void setClinics(List<String> clinics) {
         this.clinics = clinics;
     }
+
+    public void addClinic(String clinic){this.clinics.add(clinic);}
 
 }
 

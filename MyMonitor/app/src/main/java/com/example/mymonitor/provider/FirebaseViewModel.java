@@ -24,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class FirebaseViewModel extends AndroidViewModel {
@@ -109,16 +110,16 @@ public class FirebaseViewModel extends AndroidViewModel {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
 
-                    final List<String> data = (List<String>) dataSnapshot.getValue();
+                    final Map<String,String> data = (HashMap<String,String>) dataSnapshot.getValue();
 
-                    for (final String key: data){
+                    for (final Map.Entry<String, String> entry : data.entrySet()){
                         // listen to clinics' details
-                        mClinics.child(key).addValueEventListener(new ValueEventListener() {
+                        mClinics.child(entry.getValue()).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (dataSnapshot.exists()) {
                                     Clinic clinic = dataSnapshot.getValue(Clinic.class);
-                                    adapter.addData(key, clinic);
+                                    adapter.addData(entry.getValue(), clinic);
                                     adapter.notifyDataSetChanged();
                                 }
                             }
@@ -165,22 +166,23 @@ public class FirebaseViewModel extends AndroidViewModel {
         });
     }
 
+    // for usertype = clinic
     public void getUserPatients(final PatientsRecyclerViewAdapter adapter){
 
         mClinics.child(User.getKey()).child("patients").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    final List<String> data = (List<String>) dataSnapshot.getValue();
+                    final Map<String,String> data = (HashMap<String,String>) dataSnapshot.getValue();
 
-                    for (final String key: data){
+                    for (final Map.Entry<String, String> entry : data.entrySet()){
                         // listen to patients' details
-                        mPatients.child(key).addValueEventListener(new ValueEventListener() {
+                        mPatients.child(entry.getValue()).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (dataSnapshot.exists()) {
                                     Patient patient = dataSnapshot.getValue(Patient.class);
-                                    adapter.addData(key, patient);
+                                    adapter.addData(entry.getValue(), patient);
                                     adapter.notifyDataSetChanged();
                                 }
                             }
@@ -199,6 +201,40 @@ public class FirebaseViewModel extends AndroidViewModel {
 
             }
         });
+    }
+
+    public void getAllClinics(final ClinicsRecyclerViewAdapter adapter){
+
+        mClinics.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+
+                    for (DataSnapshot clinic_dataSnapshot : dataSnapshot.getChildren()) {
+                        System.out.println(clinic_dataSnapshot);
+
+                        Clinic clinic = clinic_dataSnapshot.getValue(Clinic.class);
+                        adapter.addData(clinic_dataSnapshot.getKey(), clinic);
+                        adapter.notifyDataSetChanged();
+                    }
+
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
+    // for usertype = patient
+    public void addUserClinic(final String clinic_key){
+
+        mPatients.child(User.getKey()).child("clinics").push().setValue(clinic_key);
+//        mClinics.child(clinic_key).child("patients").push().setValue(User.getKey());
+
     }
 
 }

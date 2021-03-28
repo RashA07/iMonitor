@@ -11,6 +11,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".PatientProfile"></activity>
         <activity android:name=".ClinicProfile" />
+        <activity android:name=".AllClinics" />
         <activity android:name=".Patients" />
         <activity android:name=".Navigation" />
         <activity android:name=".SignUp" />

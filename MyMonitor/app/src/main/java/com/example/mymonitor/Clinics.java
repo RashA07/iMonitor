@@ -17,6 +17,8 @@ import android.widget.TextView;
 import com.example.mymonitor.provider.FirebaseViewModel;
 import com.example.mymonitor.recyclerview.ClinicsRecyclerViewAdapter;
 import com.example.mymonitor.recyclerview.RecyclerItemClickListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -33,6 +35,15 @@ public class Clinics extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         mViewModel = new ViewModelProvider(this).get(FirebaseViewModel.class);
+
+        FloatingActionButton fab = view.findViewById(R.id.fab_clinics);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), AllClinics.class);
+                startActivity(intent);
+            }
+        });
 
         recyclerView = view.findViewById(R.id.clinics_recyclerview);
 
