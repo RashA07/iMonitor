@@ -1,14 +1,21 @@
 package com.example.mymonitor;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +31,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.math.BigDecimal;
@@ -31,6 +39,7 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 
@@ -54,6 +63,9 @@ public class LiveData extends Fragment {
     float cumulativeSPO2 = 0;
     float cumulativeTemp = 0;
 
+    private NotificationManagerCompat notificationManager;
+
+
     public static HashMap<String, Reading> getReadingHashMap() {
         return readingHashMap;
     }
@@ -61,11 +73,11 @@ public class LiveData extends Fragment {
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
 
-    Bundle bundle = this.getArguments();
+//    Bundle bundle = this.getArguments();
+//
+//    String UserDevicePath = bundle.getString("userDevice");
 
-//    String test = bundle.getString("userDevice");
 
-    DatabaseReference ref = database.getReference("ARDUINO1/");
 //    DatabaseReference ref = database.getReference(test+"/");
 
     private static DecimalFormat df = new DecimalFormat("0.00");
@@ -75,8 +87,10 @@ public class LiveData extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+//        notificationManager = NotificationManagerCompat.from(this.getContext());
 
-        DataFromFirebase();
+
+//        DataFromFirebase();
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_live_data, container, false);
@@ -84,15 +98,16 @@ public class LiveData extends Fragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        notificationManager = NotificationManagerCompat.from(this.getContext());
         super.onActivityCreated(savedInstanceState);
-        Bundle bundle = this.getArguments();
 
-        if (bundle != null) {
-            System.out.println("YES");
-            userDevice = bundle.getString("userDevice");
+//        Bundle bundle = this.getArguments();
+//        if (bundle != null) {
+//            System.out.println("YES");
+//            userDevice = bundle.getString("userDevice");
 //            DatabaseReference ref = database.getReference(userDevice+"/");
 //            System.out.println(userDevice);
-        }
+//        }
 
     }
 
@@ -104,6 +119,10 @@ public class LiveData extends Fragment {
             System.out.println("YES");
             userDevice = bundle.getString("userDevice");
         }
+
+        DataFromFirebase(userDevice);
+
+
 
 
         temp_reading = view.findViewById(R.id.card_temp_current_reading);
@@ -117,6 +136,7 @@ public class LiveData extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                NotifyPatient();
 
 //                Check if arduino is alive
 //                    If alive, get live data feed
@@ -131,42 +151,94 @@ public class LiveData extends Fragment {
 
         mLiveData = mLiveDataViewModel.getReadings(userDevice);
 
-        mLiveData.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Reading data = dataSnapshot.getValue(Reading.class);
+//        mLiveData.orderByKey().limitToLast(1);
+//        mLiveData.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+////                String heartrate = snapshot.child("Heart Rate(BPM)").getValue().toString();
+////                String spo2 = snapshot.child("SP02(%)").getValue().toString();
+////                String temp = snapshot.child("Temperature (°C)").getValue().toString();
+////
+////                heart_reading.setText(heartrate);
+////                sp_reading.setText(spo2);
+////                temp_reading.setText(temp);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
 
-                temp_reading.setText(data.getTemperature());
-                heart_reading.setText(data.getHeartRate());
-                sp_reading.setText(data.getSP02());
-            }
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//        mLiveData.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                String heartrate = dataSnapshot.child("Heart Rate(BPM)").getValue().toString();
+////                dataSnapshot.getRef().limitToLast(1)
+//
+////                Reading data = dataSnapshot.getValue(Reading.class);
+////
+////                temp_reading.setText(data.getTemperature());
+//                heart_reading.setText(heartrate);
+////                sp_reading.setText(data.getSP02());
+//            }
+//
+//            @Override
+//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//            }
+//
+//            @Override
+//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//
+//        });
+//
+//
+    }
 
+    private void NotifyPatient() {
 
-            }
+        Double temperature = Double.parseDouble(temp_reading.getText().toString());
+        Double heartrate = Double.parseDouble(heart_reading.getText().toString());
+        Double spo2 = Double.parseDouble(sp_reading.getText().toString());
+//        int reqCode = 0;
 
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-            }
+//        String channelId = "some_channel_id";
 
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+        if (heartrate > 60){
+            android.app.Notification mBuilder = new NotificationCompat.Builder(this.getContext(), Notification.CHANNEL_1_ID)
+                    .setSmallIcon(R.mipmap.ic_launcher) // notification icon
+                    .setContentTitle("HEART RATE WARNING!") // title for notification
+                    .setContentText("Heart Rate is reaching Abnormal Levels, please contact clinic")
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .build();
 
-            }
+            notificationManager.notify(1, mBuilder);
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-
-        });
+        }
 
 
     }
 
-    private void DataFromFirebase() {
+    private void DataFromFirebase(String userDevice) {
+
+        DatabaseReference ref = database.getReference(userDevice);
+
+
 
         ref.child("data").addValueEventListener(new ValueEventListener() {
             @Override
@@ -174,13 +246,21 @@ public class LiveData extends Fragment {
                 String heartRate;
                 String Spo2;
                 String Temp;
+                String Date;
+                String Time;
+                String ID;
+
                 for (DataSnapshot item : snapshot.getChildren()) {
 
                     heartRate = item.child("Heart Rate(BPM)").getValue().toString();
                     Spo2 = item.child("SP02(%)").getValue().toString();
                     Temp = item.child("Temperature (°C)").getValue().toString();
+                    Date = item.child("Date").getValue().toString();
+                    Time = item.child("Time").getValue().toString();
+                    ID = item.child("ID").getValue().toString();
 
-                    Reading patientReading = new Reading(heartRate, Spo2, Temp);
+
+                    Reading patientReading = new Reading(heartRate, Spo2, Temp, Date, Time, ID);
 
                     readingHashMap.put((item.child("Time").getValue().toString()), patientReading);
 
@@ -226,6 +306,7 @@ public class LiveData extends Fragment {
                 sp_avg.setText(Float.toString(Float.parseFloat(df.format(averageSpo2))));
                 temp_avg.setText(Float.toString(Float.parseFloat(df.format(averageTemp))));
 
+                NotifyPatient();
 
             }
 

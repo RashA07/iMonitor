@@ -233,7 +233,7 @@ public class FirebaseViewModel extends AndroidViewModel {
     public void addUserClinic(final String clinic_key){
 
         mPatients.child(User.getKey()).child("clinics").push().setValue(clinic_key);
-//        mClinics.child(clinic_key).child("patients").push().setValue(User.getKey());
+        mClinics.child(clinic_key).child("patients").push().setValue(User.getKey());
 
     }
 

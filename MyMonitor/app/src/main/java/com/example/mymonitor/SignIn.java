@@ -33,7 +33,7 @@ public class SignIn extends AppCompatActivity {
         String name_string = name.getText().toString();
         String phoneNo_string = phoneNo.getText().toString();
 
-        Toast.makeText(this, "Welcome", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Welcome " + name_string, Toast.LENGTH_SHORT).show();
         mViewModel.loginUser(name_string, phoneNo_string,this);
 
 //
