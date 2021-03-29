@@ -17,10 +17,13 @@ import com.anychart.chart.common.dataentry.DataEntry;
 import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.anychart.charts.Cartesian;
 import com.anychart.core.cartesian.series.Line;
+import com.anychart.core.utils.OrdinalZoom;
 import com.anychart.enums.MarkerType;
+import com.anychart.enums.Orientation;
 import com.anychart.enums.TooltipPositionMode;
 import com.anychart.graphics.vector.Stroke;
 
+import com.anychart.scales.Linear;
 import com.example.mymonitor.provider.Reading;
 
 import java.util.ArrayList;
@@ -32,6 +35,7 @@ public class Analysis extends Fragment {
     AnyChartView linechartHeartRate;
     AnyChartView linechartSPO2;
     AnyChartView linechartTemp;
+    AnyChart anyChart;
 
     Cartesian cartesian;
     Cartesian cartesian2;
@@ -43,6 +47,7 @@ public class Analysis extends Fragment {
     Double HeartRate;
     Double Spo2;
     Double Temperature;
+    String DateTime;
 
 
     HashMap<String, Reading> readings = new HashMap<>();
@@ -61,10 +66,14 @@ public class Analysis extends Fragment {
 
         readings = LiveData.getReadingHashMap();
 
-        for(int i =0; i<readings.size(); i++){
-            if (readings.size() > 0){
+        if (readings.isEmpty()){
+            HeartRates.add(new ValueDataEntry(0, 0));
+            Spo2s.add(new ValueDataEntry(0, 0));
+            Temps.add(new ValueDataEntry(0, 0));
+        }
+        else {
+            for(int i =0; i<readings.size(); i++){
                 keyReadings = readings.keySet().toArray();
-                assert keyReadings != null;
                 HeartRate = Double.parseDouble(readings.get(keyReadings[i]).getHeartRate());
                 Spo2 = Double.parseDouble(readings.get(keyReadings[i]).getSP02());
                 Temperature = Double.parseDouble(readings.get(keyReadings[i]).getTemperature());
@@ -72,18 +81,18 @@ public class Analysis extends Fragment {
                 Spo2s.add(new ValueDataEntry(String.valueOf(keyReadings[i]), Spo2));
                 Temps.add(new ValueDataEntry(String.valueOf(keyReadings[i]), Temperature));
             }
-            else {
-                HeartRates.add(new ValueDataEntry(0, 0));
-                Spo2s.add(new ValueDataEntry(0, 0));
-                Temps.add(new ValueDataEntry(0, 0));
-            }
+
         }
+
 
 //        Monthly
 
 
+
+
 //      Chart for Heart Rate:
         APIlib.getInstance().setActiveAnyChartView(linechartHeartRate);
+
         cartesian = AnyChart.line();
         cartesian.animation(true);
         cartesian.padding(10d, 20d, 5d, 20d);
@@ -99,6 +108,13 @@ public class Analysis extends Fragment {
         cartesian.legend().enabled(true);
         cartesian.legend().fontSize(13d);
         cartesian.legend().padding(0d, 0d, 10d, 0d);
+//
+        cartesian.xScroller(true);
+        OrdinalZoom xZoomHR = cartesian.xZoom();
+        xZoomHR.setToPointsCount(6, false, null);
+        xZoomHR.getStartRatio();
+        xZoomHR.getEndRatio();
+
         series = cartesian.line(HeartRates);
         series.name("Heart Rate (BPM)");
         series.hovered().markers().enabled(true);
@@ -109,6 +125,8 @@ public class Analysis extends Fragment {
                 .position("right")
                 .offsetX(5d)
                 .offsetY(5d);
+
+
 
         linechartHeartRate.setChart(cartesian);
 
@@ -129,6 +147,14 @@ public class Analysis extends Fragment {
         cartesian2.legend().enabled(true);
         cartesian2.legend().fontSize(13d);
         cartesian2.legend().padding(0d, 0d, 10d, 0d);
+        cartesian2.xScroller(true);
+        OrdinalZoom xZoomSP = cartesian2.xZoom();
+        xZoomSP.setToPointsCount(6, false, null);
+        xZoomSP.getStartRatio();
+        xZoomSP.getEndRatio();
+
+
+
         series2 = cartesian2.line(Spo2s);
         series2.name("Blood Oxygen (%)");
         series2.color("#FF0000");
@@ -144,7 +170,7 @@ public class Analysis extends Fragment {
         linechartSPO2.setChart(cartesian2);
 
 
-//      Chart for Blood Oxygen (SPO2)
+//      Chart for Temperature
         APIlib.getInstance().setActiveAnyChartView(linechartTemp);
         cartesian3 = AnyChart.line();
         cartesian3.animation(true);
@@ -161,6 +187,12 @@ public class Analysis extends Fragment {
         cartesian3.legend().enabled(true);
         cartesian3.legend().fontSize(13d);
         cartesian3.legend().padding(0d, 0d, 10d, 0d);
+        cartesian3.xScroller(true);
+        OrdinalZoom xZoomTP = cartesian3.xZoom();
+        xZoomTP.setToPointsCount(6, false, null);
+        xZoomTP.getStartRatio();
+        xZoomTP.getEndRatio();
+
         series3 = cartesian3.line(Temps);
         series3.name("Temperature in °C");
         series3.color("#FF0000");

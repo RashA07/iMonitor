@@ -3,6 +3,7 @@ package com.example.mymonitor;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -215,21 +216,37 @@ public class LiveData extends Fragment {
         Double temperature = Double.parseDouble(temp_reading.getText().toString());
         Double heartrate = Double.parseDouble(heart_reading.getText().toString());
         Double spo2 = Double.parseDouble(sp_reading.getText().toString());
-//        int reqCode = 0;
+        Double age; // get age of patient
 
-//        String channelId = "some_channel_id";
 
-        if (heartrate > 60){
-            android.app.Notification mBuilder = new NotificationCompat.Builder(this.getContext(), Notification.CHANNEL_1_ID)
+        Double highHeart = 20.00;
+
+        android.app.Notification mBuilder;
+
+        if (heartrate > highHeart && spo2 >22){
+
+//          This will change color of the text view
+            heart_reading.setTextColor(Color.parseColor("#FF0000"));
+
+//          This will trigger a notification
+            mBuilder = new NotificationCompat.Builder(this.getContext(), Notification.CHANNEL_1_ID)
                     .setSmallIcon(R.mipmap.ic_launcher) // notification icon
                     .setContentTitle("HEART RATE WARNING!") // title for notification
                     .setContentText("Heart Rate is reaching Abnormal Levels, please contact clinic")
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .build();
 
-            notificationManager.notify(1, mBuilder);
+        } else{
+
+            mBuilder = new NotificationCompat.Builder(this.getContext(), Notification.CHANNEL_2_ID)
+                    .setSmallIcon(R.mipmap.ic_launcher) // notification icon
+                    .setContentTitle("Low Warning") // title for notification
+                    .setContentText("Heart Rate is reaching Abnormal Levels, please contact clinic")
+                    .setPriority(NotificationCompat.PRIORITY_LOW)
+                    .build();
 
         }
+        notificationManager.notify(1, mBuilder);
 
 
     }
@@ -249,6 +266,7 @@ public class LiveData extends Fragment {
                 String Date;
                 String Time;
                 String ID;
+                String key;
 
                 for (DataSnapshot item : snapshot.getChildren()) {
 
@@ -259,10 +277,13 @@ public class LiveData extends Fragment {
                     Time = item.child("Time").getValue().toString();
                     ID = item.child("ID").getValue().toString();
 
+                    key = Date + " " + Time;
+
 
                     Reading patientReading = new Reading(heartRate, Spo2, Temp, Date, Time, ID);
 
-                    readingHashMap.put((item.child("Time").getValue().toString()), patientReading);
+
+                    readingHashMap.put(key, patientReading);
 
                 }
 
@@ -270,18 +291,18 @@ public class LiveData extends Fragment {
 
 
 //                DEBUG AND GET THE LATEST TIME BECAUSE NOW IT WORKS LIKE A HASHMAP AND THATS NOT GOOD
-                Object last = keys[keys.length - 1];
+                Object last = keys[15];
 
                 Reading test = readingHashMap.get(last);
 
-                float trial = Float.parseFloat(test.getHeartRate());
+//                float trial = Float.parseFloat(test.getHeartRate());
 
 //                if (trial == 0){
 //                    temp_reading.setText("Device Offline");
 //                    heart_reading.setText("Device Offline");
 //                    sp_reading.setText("Device Offline");
 //                }
-//                else {
+////                else {
                     temp_reading.setText(test.getTemperature());
                     heart_reading.setText(test.getHeartRate());
                     sp_reading.setText(test.getSP02());

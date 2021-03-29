@@ -5,8 +5,16 @@ public class PatientDetails {
 
     private String name;
     private String phoneNo;
+    private String age;
 
     public PatientDetails(){}
+
+    public PatientDetails(String name, String phoneNo, String age){
+        this.name = name;
+        this.phoneNo = phoneNo;
+        this.age = age;
+
+    }
 
     public PatientDetails(String name, String phoneNo){
         this.name = name;
@@ -30,4 +38,11 @@ public class PatientDetails {
         this.phoneNo = phoneNo;
     }
 
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
 }
