@@ -15,6 +15,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:layout_margin="16dp" />
+        android:layout_margin="16dp"
+        android:contentDescription="TODO"
+        android:foreground="@drawable/ic_baseline_add_24" />
 
 </FrameLayout>
