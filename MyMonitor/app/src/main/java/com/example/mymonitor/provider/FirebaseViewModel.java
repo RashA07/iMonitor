@@ -11,6 +11,9 @@ import com.example.mymonitor.Navigation;
 import com.example.mymonitor.Patients;
 import com.example.mymonitor.User;
 import com.example.mymonitor.UserEnum;
+import com.example.mymonitor.listener.DeviceCheckListener;
+import com.example.mymonitor.listener.PatientListener;
+import com.example.mymonitor.recyclerview.AllClinicsRecyclerViewAdapter;
 import com.example.mymonitor.recyclerview.ClinicsRecyclerViewAdapter;
 import com.example.mymonitor.recyclerview.DevicesRecyclerViewAdapter;
 import com.example.mymonitor.recyclerview.PatientsRecyclerViewAdapter;
@@ -118,6 +121,7 @@ public class FirebaseViewModel extends AndroidViewModel {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (dataSnapshot.exists()) {
+                                    System.out.println(dataSnapshot);
                                     Clinic clinic = dataSnapshot.getValue(Clinic.class);
                                     adapter.addData(entry.getValue(), clinic);
                                     adapter.notifyDataSetChanged();
@@ -203,7 +207,7 @@ public class FirebaseViewModel extends AndroidViewModel {
         });
     }
 
-    public void getAllClinics(final ClinicsRecyclerViewAdapter adapter){
+    public void getAllClinics(final AllClinicsRecyclerViewAdapter adapter){
 
         mClinics.addValueEventListener(new ValueEventListener() {
             @Override
@@ -227,6 +231,25 @@ public class FirebaseViewModel extends AndroidViewModel {
         });
 
 
+        // SUPER UGLY CODE (from getUserClinics above)
+        mPatients.child(User.getKey()).child("clinics").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+
+                    final Map<String, String> data = (HashMap<String, String>) dataSnapshot.getValue();
+
+                    adapter.addSelectedData(new ArrayList<>(data.values()));
+                    adapter.notifyDataSetChanged();
+
+
+                }
+            }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
     }
 
     // for usertype = patient
@@ -234,6 +257,45 @@ public class FirebaseViewModel extends AndroidViewModel {
 
         mPatients.child(User.getKey()).child("clinics").push().setValue(clinic_key);
         mClinics.child(clinic_key).child("patients").push().setValue(User.getKey());
+
+    }
+
+    public void getPatient(String patient_key, final PatientListener patient){
+        mPatients.child(patient_key).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+
+                    patient.dataChanged(dataSnapshot.getValue(Patient.class));
+
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public boolean checkDevice(String device_name, final DeviceCheckListener deviceCheck){
+        System.out.println("DEVICE CHECK");
+
+        mRef.child(device_name).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.getValue() == null) {
+                    deviceCheck.onDenied();
+                } else{
+                    deviceCheck.onApprove();
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        return false;
 
     }
 

@@ -2,17 +2,18 @@ package com.example.mymonitor.provider;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Patient {
 
     private PatientDetails details;
     private Device device;
-    private List<String> clinics;
+    private HashMap<String,String> clinics;
 
     public Patient(){}
 
-    public Patient(PatientDetails details, Device device, List<String> clinics) {
+    public Patient(PatientDetails details, Device device, HashMap<String,String> clinics) {
         this.details = details;
         this.device = device;
         this.clinics = clinics;
@@ -22,9 +23,9 @@ public class Patient {
         this.details = details;
         this.device = device;
 
-        clinics = new ArrayList<>();
+        clinics = new HashMap<>();
         //default emergency call
-        clinics.add("-MWCkgsPm0RMYc0gzYm4");
+//        clinics.add("-MWCkgsPm0RMYc0gzYm4");
 
 
     }
@@ -45,15 +46,14 @@ public class Patient {
         this.device = device;
     }
 
-    public List<String> getClinics() {
+    public HashMap<String,String> getClinics() {
         return clinics;
     }
 
-    public void setClinics(List<String> clinics) {
+    public void setClinics(HashMap<String,String> clinics) {
         this.clinics = clinics;
     }
 
-    public void addClinic(String clinic){this.clinics.add(clinic);}
 
 }
 

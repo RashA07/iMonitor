@@ -48,14 +48,16 @@ public class Navigation extends AppCompatActivity {
 
 
 
-        loadFragment(new LiveData());
-
-
         navBar = findViewById(R.id.navigationView);
+
+        loadFragment(new LiveData());
+        navBar.setSelectedItemId(R.id.navigation_liveData);
+
         navBar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
+                    case R.id.navigation_patient:  loadFragment(new PatientProfile()); break;
                     case R.id.navigation_liveData:  loadFragment(new LiveData()); break;
                     case R.id.navigation_analysis:  loadFragment(new Analysis()); break;
                     case R.id.navigation_devices:  loadFragment(new Devices()); break;
