@@ -24,11 +24,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 
 public class FirebaseViewModel extends AndroidViewModel {
 
@@ -296,6 +301,95 @@ public class FirebaseViewModel extends AndroidViewModel {
         });
 
         return false;
+
+    }
+
+    public void spamData(String device_name){
+
+        class FakeData{
+            private String id;
+            private String date;
+            private String time;
+            private String heart_rate;
+            private String temperature;
+            private String blood_oxygen;
+
+            public FakeData(String id, String date, String time, Float value) {
+                this.id = id;
+                this.date = date;
+                this.time = time;
+                this.heart_rate = Float.toString(value+90);
+                this.temperature = Float.toString(value+35);
+                this.blood_oxygen = Float.toString(value+90);
+            }
+
+            public String getId() {
+                return id;
+            }
+
+            public void setId(String id) {
+                this.id = id;
+            }
+
+            public String getDate() {
+                return date;
+            }
+
+            public void setDate(String date) {
+                this.date = date;
+            }
+
+            public String getTime() {
+                return time;
+            }
+
+            public void setTime(String time) {
+                this.time = time;
+            }
+
+            public String getHeart_rate() {
+                return heart_rate;
+            }
+
+            public void setHeart_rate(String heart_rate) {
+                this.heart_rate = heart_rate;
+            }
+
+            public String getTemperature() {
+                return temperature;
+            }
+
+            public void setTemperature(String temperature) {
+                this.temperature = temperature;
+            }
+
+            public String getBlood_oxygen() {
+                return blood_oxygen;
+            }
+
+            public void setBlood_oxygen(String blood_oxygen) {
+                this.blood_oxygen = blood_oxygen;
+            }
+        }
+
+        float rdm;
+        DecimalFormat df = new DecimalFormat("0.00");
+        LocalDateTime date = LocalDateTime.now().minusDays(360);
+        DateTimeFormatter date_only = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter time_only = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+
+        for (int i = 0; i < 500; i++) {
+
+//        leftLimit + (new Random().nextFloat() * (rightLimit - leftLimit));
+            rdm = 0 + (new Random().nextFloat() * 10);
+            date = date.plusHours(1);
+            mRef.child(device_name).child("data").push().setValue(new FakeData(device_name, date.format(date_only), date.format(time_only), Float.parseFloat(df.format(rdm))));
+
+
+        }
+
+
 
     }
 

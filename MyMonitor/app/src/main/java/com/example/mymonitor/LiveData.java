@@ -133,10 +133,18 @@ public class LiveData extends Fragment {
         sp_reading = view.findViewById(R.id.card_sp_current_reading);
         sp_avg = view.findViewById(R.id.card_sp_average_reading);
 
+
+
+        mLiveDataViewModel = new ViewModelProvider(this).get(FirebaseViewModel.class);
+
+        mLiveData = mLiveDataViewModel.getReadings(userDevice);
+
         Button button = (Button) view.findViewById(R.id.button_livedata);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                mLiveDataViewModel.spamData(userDevice);
 //                NotifyPatient();
 
 //                Check if arduino is alive
@@ -147,10 +155,6 @@ public class LiveData extends Fragment {
 //                DataFromFirebase();
             }
         });
-
-        mLiveDataViewModel = new ViewModelProvider(this).get(FirebaseViewModel.class);
-
-        mLiveData = mLiveDataViewModel.getReadings(userDevice);
 
 //        mLiveData.orderByKey().limitToLast(1);
 //        mLiveData.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -270,12 +274,12 @@ public class LiveData extends Fragment {
 
                 for (DataSnapshot item : snapshot.getChildren()) {
 
-                    heartRate = item.child("Heart Rate(BPM)").getValue().toString();
-                    Spo2 = item.child("SP02(%)").getValue().toString();
-                    Temp = item.child("Temperature (°C)").getValue().toString();
-                    Date = item.child("Date").getValue().toString();
-                    Time = item.child("Time").getValue().toString();
-                    ID = item.child("ID").getValue().toString();
+                    heartRate = item.child("heart_rate").getValue().toString();
+                    Spo2 = item.child("blood_oxygen").getValue().toString();
+                    Temp = item.child("temperature").getValue().toString();
+                    Date = item.child("date").getValue().toString();
+                    Time = item.child("time").getValue().toString();
+                    ID = item.child("id").getValue().toString();
 
                     key = Date + " " + Time;
 
