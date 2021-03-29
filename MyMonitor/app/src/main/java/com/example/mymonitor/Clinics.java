@@ -36,14 +36,7 @@ public class Clinics extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         mViewModel = new ViewModelProvider(this).get(FirebaseViewModel.class);
 
-        FloatingActionButton fab = view.findViewById(R.id.fab_clinics);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), AllClinics.class);
-                startActivity(intent);
-            }
-        });
+
 
         recyclerView = view.findViewById(R.id.clinics_recyclerview);
 
@@ -66,6 +59,16 @@ public class Clinics extends Fragment {
                     }
                 })
         );
+
+        FloatingActionButton fab = view.findViewById(R.id.fab_clinics);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), AllClinics.class);
+                intent.putExtra("PATIENT_CLINICS", new Gson().toJson(adapter.getKeys()));
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

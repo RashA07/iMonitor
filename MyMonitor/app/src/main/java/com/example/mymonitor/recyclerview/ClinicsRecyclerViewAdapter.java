@@ -42,6 +42,10 @@ public class ClinicsRecyclerViewAdapter extends RecyclerView.Adapter<ClinicsRecy
         return keys.get(position);
     }
 
+    public List<String> getKeys(){
+        return new ArrayList<>(data.keySet());
+    }
+
     @NonNull
     @Override
     public ClinicsRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

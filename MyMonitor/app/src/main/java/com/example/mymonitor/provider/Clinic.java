@@ -1,6 +1,7 @@
 package com.example.mymonitor.provider;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Clinic {
@@ -9,7 +10,7 @@ public class Clinic {
     private String phoneNo;
     private Boolean status;
 
-    private List<String> patients;
+    private HashMap<String,String> patients;
 
     public Clinic(){}
 
@@ -17,7 +18,7 @@ public class Clinic {
         this.name = name;
         this.phoneNo = phoneNo;
         this.status = status;
-        this.patients = new ArrayList<>();
+        this.patients = new HashMap<>();
     }
 
     public String getName() {
@@ -53,11 +54,11 @@ public class Clinic {
         this.status = status;
     }
 
-    public List<String> getPatients() {
+    public HashMap<String,String> getPatients() {
         return patients;
     }
 
-    public void setPatients(List<String> patients) {
+    public void setPatients(HashMap<String,String> patients) {
         this.patients = patients;
     }
 }
