@@ -53,7 +53,8 @@
                         android:layout_height="30dp"
                         android:layout_weight="1"
                         android:text="Temperature"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:textSize="24sp" />
 
                     <TextView
                         android:id="@+id/card_temp_current_reading"
@@ -62,7 +63,7 @@
                         android:layout_weight="1"
                         android:gravity="end"
                         android:text="0"
-                        android:textSize="30dp" />
+                        android:textSize="24sp" />
 
                 </TableRow>
 
@@ -73,13 +74,20 @@
 
 
                     <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Average Temperature"
+                        android:textSize="18sp" />
+
+                    <TextView
                         android:id="@+id/card_temp_average_reading"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="end"
                         android:text="0"
-                        android:textSize="20dp" />
+                        android:textSize="18sp" />
 
                 </TableRow>
 
@@ -113,7 +121,8 @@
                         android:layout_height="30dp"
                         android:layout_weight="1"
                         android:text="Heart Rate (BPM)"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:textSize="24sp" />
 
                     <TextView
                         android:id="@+id/card_heart_current_reading"
@@ -122,7 +131,7 @@
                         android:layout_weight="1"
                         android:gravity="end"
                         android:text="0"
-                        android:textSize="30dp" />
+                        android:textSize="24sp" />
 
                 </TableRow>
 
@@ -133,13 +142,20 @@
 
 
                     <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Average Heart Rate"
+                        android:textSize="18sp" />
+
+                    <TextView
                         android:id="@+id/card_heart_average_reading"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="end"
                         android:text="0"
-                        android:textSize="20dp" />
+                        android:textSize="18sp" />
 
                 </TableRow>
 
@@ -172,8 +188,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
                         android:layout_weight="1"
-                        android:text="SP02 (%)"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                        android:text="Blood Oxygen (%)"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:textSize="24sp" />
 
                     <TextView
                         android:id="@+id/card_sp_current_reading"
@@ -182,7 +199,7 @@
                         android:layout_weight="1"
                         android:gravity="end"
                         android:text="0"
-                        android:textSize="30dp" />
+                        android:textSize="24sp" />
 
                 </TableRow>
 
@@ -193,13 +210,20 @@
 
 
                     <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Average Blood Oxygen"
+                        android:textSize="18sp" />
+
+                    <TextView
                         android:id="@+id/card_sp_average_reading"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="end"
                         android:text="0"
-                        android:textSize="20dp" />
+                        android:textSize="18sp" />
 
                 </TableRow>
 

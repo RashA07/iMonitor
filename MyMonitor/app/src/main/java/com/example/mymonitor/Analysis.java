@@ -35,7 +35,6 @@ public class Analysis extends Fragment {
     AnyChartView linechartHeartRate;
     AnyChartView linechartSPO2;
     AnyChartView linechartTemp;
-    AnyChart anyChart;
 
     Cartesian cartesian;
     Cartesian cartesian2;
@@ -47,15 +46,9 @@ public class Analysis extends Fragment {
     Double HeartRate;
     Double Spo2;
     Double Temperature;
-    String DateTime;
-
 
     HashMap<String, Reading> readings = new HashMap<>();
     Object[] keyReadings;
-
-    HashMap<Integer, ArrayList<String>> latestReadings = new HashMap<>();
-
-//    ArrayList<DataEntry> value = new ArrayList<>();
 
 
     public void setLineChart() {
@@ -83,12 +76,6 @@ public class Analysis extends Fragment {
             }
 
         }
-
-
-//        Monthly
-
-
-
 
 //      Chart for Heart Rate:
         APIlib.getInstance().setActiveAnyChartView(linechartHeartRate);
@@ -220,6 +207,7 @@ public class Analysis extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
         linechartHeartRate = view.findViewById(R.id.heartRateGraph_Chart);
         linechartHeartRate.setProgressBar(view.findViewById(R.id.Hprogress_bar));
         linechartSPO2 = view.findViewById(R.id.spo2Graph_Chart);

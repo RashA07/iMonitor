@@ -66,9 +66,15 @@
 
         <TextView
             android:id="@+id/text_clinic_setaddress"
-            android:layout_width="wrap_content"
+            android:layout_width="277dp"
             android:layout_height="wrap_content"
             android:text="1407 Graymalkin Lane, Salem Center, located in Westchester County, New York." />
     </TableRow>
+
+    <Button
+        android:id="@+id/button_clinic_logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Log Out" />
 
 </LinearLayout>

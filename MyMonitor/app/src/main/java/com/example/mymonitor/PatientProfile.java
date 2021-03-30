@@ -10,18 +10,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.mymonitor.listener.PatientListener;
 import com.example.mymonitor.provider.FirebaseViewModel;
 import com.example.mymonitor.provider.Patient;
 import com.example.mymonitor.provider.PatientDetails;
+import com.example.mymonitor.provider.Reading;
 import com.google.gson.Gson;
+
+import java.util.HashMap;
 
 public class PatientProfile extends Fragment {
 
     private TextView name;
     private TextView phoneNo;
+    private Button logOut;
     private String userId;
     private FirebaseViewModel mViewModel;
 
@@ -36,6 +41,7 @@ public class PatientProfile extends Fragment {
 
         name = view.findViewById(R.id.text_patient_name);
         phoneNo = view.findViewById(R.id.text_patient_setphoneno);
+        logOut = view.findViewById(R.id.logOut);
 
         mViewModel = new ViewModelProvider(this).get(FirebaseViewModel.class);
         mViewModel.getPatient(userId, new PatientListener() {
@@ -48,7 +54,21 @@ public class PatientProfile extends Fragment {
             }
         });
 
+        logOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LiveData.getReadingHashMap().clear();
+                setLogOut();
 
+            }
+        });
+
+
+    }
+
+    public void setLogOut(){
+        Intent intent = new Intent(getActivity(), SignIn.class);
+        startActivity(intent);
     }
 
     @Override

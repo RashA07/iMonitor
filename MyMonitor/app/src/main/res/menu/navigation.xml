@@ -13,13 +13,16 @@
 
     <item
         android:id="@+id/navigation_analysis"
-        android:title="Analysis"/>
+        android:icon="@drawable/ic_baseline_show_chart_24"
+        android:title="Analysis" />
 
     <item
         android:id="@+id/navigation_devices"
-        android:title="Devices"/>
+        android:icon="@drawable/ic_baseline_devices_24"
+        android:title="Devices" />
 
     <item
         android:id="@+id/navigation_clinics"
-        android:title="Clinics"/>
+        android:icon="@drawable/ic_baseline_local_hospital_24"
+        android:title="Clinics" />
 </menu>
