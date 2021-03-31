@@ -1,6 +1,9 @@
 # iMonitor
 DSC Global Solution Challenge 2021 Project
 
+### To run code
+Run emulator on Android Studio with minimum android version 26 installed
+
 ## Why we decided on topic
 As Covid is prevalent and highlighted many issues in the healthcare system in recent years, we started to notice that the reason that low income families were drastically affected
 by the pandemic is because they do not have the proper equipments or the knowledges to keep track on their health issues, specifically Covid. Most of these peoples need to engage 
