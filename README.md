@@ -33,3 +33,36 @@ Below are the features that can be added in our app as extensions
 - Additional sensors can be added to allow more health data types
 - Patient health data can be shared for expert analysis
 - Create a model to predict symptoms and patients in risk with anonymized data
+
+
+## Firebase Structure:
+
+|--SENSOR OBJECT
+ |--"ARDUINO" :
+    |--"data" :
+      |--"-DATA OBJECT" :
+        |--"blood_oxygen",
+        |--"date",
+        |--"heart_rate",
+        |--"id",
+        |--"temperature",
+        |--"time",
+        
+ |--"Clinics" : 
+    |--"-CLINIC OBJECT" : 
+      |--"name",
+      |--"patients":
+        |--"-PATIENT OBJECT",
+      |--"phoneNo",
+      |--"status",
+
+ |--"Patients" :
+    |--"PATIENT OBJECT" :
+      |--"clinics" : 
+        |--"CLINIC OBJECT",
+      |--"details" :
+        |--"name",
+        |--"phoneNo",
+      |--"device" :
+        |--"name",
+        |--"status",
