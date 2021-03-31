@@ -1,7 +1,7 @@
 # iMonitor
 DSC Global Solution Challenge 2021 Project
 
-## Youtube Link: https://youtu.be/TEH-ciudb-8
+Youtube Link: https://youtu.be/TEH-ciudb-8
 
 ### To run code
 Run emulator on Android Studio with minimum android version 26 installed
