@@ -36,7 +36,7 @@ Below are the features that can be added in our app as extensions
 
 
 ## Firebase Structure:
-
+```
 |--SENSOR OBJECT
  |--"ARDUINO" :
     |--"data" :
@@ -66,3 +66,5 @@ Below are the features that can be added in our app as extensions
       |--"device" :
         |--"name",
         |--"status",
+								
+```
