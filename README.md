@@ -6,6 +6,13 @@ Youtube Link: https://youtu.be/TEH-ciudb-8
 ### To run code
 Run emulator on Android Studio with minimum android version 26 installed
 
+Note: 
+In order to add a new Patient, it would require a new registered Arduino Device. Since we cannot provide a device for this matter, we invite you to use an existing device under the login: 
+
+(case sensitive)
+Username: Aqeel  
+Number: 1234
+
 ## Why we decided on topic
 As Covid is prevalent and highlighted many issues in the healthcare system in recent years, we started to notice that the reason that low income families were drastically affected by the pandemic is because they do not have the proper equipment or knowledge to keep track on their health issues, specifically Covid. Most of these peoples need to engage in daily labour for their survival and couldn’t take care of their dependents while providing for their families. Thus, we are choosing this topic to hopefully resolve the issue.
 
