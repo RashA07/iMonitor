@@ -10,6 +10,7 @@ Note:
 In order to add a new Patient, it would require a new registered Arduino Device. Since we cannot provide a device for this matter, we invite you to use an existing device under the login: 
 
 (case sensitive)
+
 Username: Aqeel  
 Number: 1234
 
